@@ -12,8 +12,9 @@
 
 ## Dev Tools
 
+- [winget][winget] (Windows)
 <!-- TODO: Explain winget installation for Windows before 11 -->
-- [gsudo][gsudo]
+- [gsudo][gsudo] (Windows)
 <!-- TODO: Explain issue with PowerShell version - winget does not provide the latest) -->
 - [PowerShell][powershell]
   <!-- TODO: Explain Oh My Posh installation -->
@@ -30,7 +31,7 @@
 
 ## Other Tools
 
-- [ShareX][sharex]
+- [ShareX][sharex] (Windows)
 <!-- TODO: Explain how to configure calibre and plugins -->
 - [Calibre][calibre]
 
@@ -42,6 +43,7 @@
 
 [vscode]: https://code.visualstudio.com/download "Visual Studio Code"
 
+[winget]: https://github.com/microsoft/winget-cli "Windows Package Manager Client"
 [gsudo]: https://gerardog.github.io/gsudo/docs/install "gsudo"
 [powershell]: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell "PowerShell"
 [ohmyposh]: https://ohmyposh.dev/docs "Oh My Posh"
