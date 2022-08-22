@@ -47,7 +47,7 @@ return (Get-ChildItem -Path $Folder -Directory).Name `
   "command": 
   {
       "action": "newTab",
-      "startingDirectory": "C:/Projects/GitHub/HayGroup/ic2-iac",
+      "startingDirectory": "C:/Projects/GitHub/<organization>/ic2-iac",
       "suppressApplicationTitle": true,
       "tabTitle": "ic2-iac",
       "tabColor": "#06332A"
