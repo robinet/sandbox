@@ -3,6 +3,7 @@
 ## Version Control
 
 - [Git][git]
+- [GitHub CLI][github-cli]
 - [TortoiseGit][tortoisegit]
 
 ## IDE and Editors
@@ -39,6 +40,7 @@
 
 <!-- Absolute Links -->
 [git]: https://git-scm.com/download "Git"
+[github-cli]: https://github.com/cli/cli "GitHub CLI"
 [tortoisegit]: https://tortoisegit.org "Windows Shell Interface to Git"
 
 [vscode]: https://code.visualstudio.com/download "Visual Studio Code"
