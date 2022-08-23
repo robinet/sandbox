@@ -4,6 +4,7 @@
 
 - [Git][git]
 - [GitHub CLI][github-cli]
+  > ⚠️ No support for multiple github accounts
 - [TortoiseGit][tortoisegit]
 
 ## IDE and Editors
