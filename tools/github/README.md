@@ -1,8 +1,8 @@
 # README
 
-<!-- TODO: GitHub: Create a self-contained command line tool that can be used in developer machines and build agents -->
-<!-- TODO: GitHub: Primary use case is reporting (maybe CSharp) -->
-<!-- TODO: GitHub: Secondary use case is automation via DSC (maybe terraform) -->
+<!-- TODO: GitHub: Create a self-contained command line tool or a set of scripts scripts that can be used in developer machines and build agents -->
+<!-- TODO: GitHub: Primary use case is reporting (maybe PowerShell, Bash, Python) -->
+<!-- TODO: GitHub: Secondary use case is automation via DSC (maybe terraform, Go, CSharp) -->
 
 <!-- External Links -->
 [github-rest-openapi]: https://github.com/github/rest-api-description "GitHub REST API - OpenAPI"
