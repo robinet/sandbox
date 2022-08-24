@@ -57,28 +57,59 @@ function LoginWithEncryptedToken ([string] $encryptedToken) {
 
 function LoginInteractivelyIfNecessary () {
   gh auth status -h github.com 2>$null
-  if ($LASTEXITCODE -ne 0) {
+  $isAlreadyLoggedIn = $LASTEXITCODE -eq 0
+  if (-not $isAlreadyLoggedIn) {
     gh auth login -h 'github.com' -w
   }
   if ($LASTEXITCODE -ne 0) {
     throw "GitHub interactive login has been canceled or failed."
   }
+  return $isAlreadyLoggedIn
 }
 
-if ([string]::IsNullOrWhiteSpace($ProfileName)) {
-  LoginInteractivelyIfNecessary
-  $ProfileName = (GetCurrentConfig).User
-}
-
+$isProfileNameSpecified = -not [string]::IsNullOrWhiteSpace($ProfileName)
 $isOverride = $Override.IsPresent
-$config = LoadConfigFromFile $ProfileName
 
-if ($isOverride -or $null -eq $config) {
+# Happy days: ProfileName specified with Override flag. We don't care about contents of the file
+if ($isProfileNameSpecified -and $isOverride) {
   LoginInteractivelyIfNecessary
   $config = GetCurrentConfig
   SaveConfigToFile $config $ProfileName
   return
 }
 
+# Sad days: ProfileName not specified. Get it from context and make sure we don't override unless specified
+if (-not $isProfileNameSpecified) {
+  $isAlreadyLoggedIn = LoginInteractivelyIfNecessary
+  $config = GetCurrentConfig
+  $ProfileName = $config.User
+
+  $existingConfig = LoadConfigFromFile $ProfileName
+  if ($null -ne $existingConfig -and -not $isOverride) {
+    # Logout if we logged in
+    if (-not $isAlreadyLoggedIn) {
+      gh auth logout
+    }
+    throw "Found existing profile '$ProfileName' but '-Override' was not set."
+  }
+
+  # No matching profile found or we are overriding anyways
+  SaveConfigToFile $config $ProfileName
+  return
+}
+
+# At this point ProfileName has been specified and the Override flag is not set
+# See above conditions ("Happy days" and "Sad days")
+
+$config = LoadConfigFromFile $ProfileName
+# If profile file does not exist, ask the user to login and save
+if ($null -ne $config ) {
+  LoginInteractivelyIfNecessary
+  $config = GetCurrentConfig
+  SaveConfigToFile $config $ProfileName
+  return
+}
+
+# At this point: ProfileName has been specified and profile has been found. Override flag is not set
 LoginWithEncryptedToken $config.EncryptedToken
 SetCurrentConfig $config
