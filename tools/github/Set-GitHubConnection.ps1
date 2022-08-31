@@ -72,7 +72,7 @@ $isOverride = $Override.IsPresent
 
 # Happy days: ProfileName specified with Override flag. We don't care about contents of the file
 if ($isProfileNameSpecified -and $isOverride) {
-  LoginInteractivelyIfNecessary
+  LoginInteractivelyIfNecessary | Out-Null
   $config = GetCurrentConfig
   SaveConfigToFile $config $ProfileName
   return
@@ -104,12 +104,12 @@ if (-not $isProfileNameSpecified) {
 $config = LoadConfigFromFile $ProfileName
 # If profile file does not exist, ask the user to login and save
 if ($null -ne $config ) {
-  LoginInteractivelyIfNecessary
+  LoginInteractivelyIfNecessary | Out-Null
   $config = GetCurrentConfig
   SaveConfigToFile $config $ProfileName
   return
 }
 
 # At this point: ProfileName has been specified and profile has been found. Override flag is not set
-LoginWithEncryptedToken $config.EncryptedToken
+LoginWithEncryptedToken $config.EncryptedToken | Out-Null
 SetCurrentConfig $config
