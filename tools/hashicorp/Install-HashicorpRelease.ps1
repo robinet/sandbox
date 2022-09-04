@@ -2,21 +2,18 @@
 
 .DESCRIPTION
 
-Install terraform using the releases API: https://releases.hashicorp.com/docs/api/v1/
+Install a Hashicorp product (pre-compiled binaries) using the releases API: https://releases.hashicorp.com/docs/api/v1/
 TODO: Extend terraform installation to all hashicorp products
 
 #>
 
 param (
-  [string] $Version = 'latest'
-  , [string] $Arch = 'amd64' # or 386
+  [Validateset('terraform', 'packer')] [string] $Product = 'terraform'
+  , [Validateset('windows', 'linux', 'darwin')] [string] $OS = 'windows' 
+  , [string] $Version = 'latest'
+  , [Validateset('386', 'amd64', 'arm64')] [string] $Arch = 'amd64'
   , [switch] $KeepCurrentVersion
 )
-
-<#-- Script variables --#>
-
-$Product = 'terraform'
-$OS = 'windows'
 
 <#-- Script Functions --#>
 
@@ -31,14 +28,14 @@ function GetDownloadMetadata() {
       $_.os -eq $OS -and $_.arch -eq $Arch
     })
   if ($null -eq $downloadMetadata) {
-    throw "Could not find a windows build for version '$Version' and arch '$Arch'"
+    throw "Could not find a build for '$Product' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
   }
   $downloadUrl = $downloadMetadata.url
 
   # Find specific version from download URL
   $matched = [UriBuilder]::new($downloadUrl).Path -match "^/$Product/([^/]+)/"
   if (-not $matched) {
-    throw "Cannot find specific version for product '$Product' from URL '$downloadUrl'"
+    throw "Cannot find a specific version for '$Product' from URL '$downloadUrl' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
   }
 
   # Update version using capture group 1 at script scope
@@ -48,7 +45,7 @@ function GetDownloadMetadata() {
   return $downloadMetadata
 }
 
-function EnsureTerraformFolderExists([string] $specificVersion) {
+function EnsureProductFolderExists([string] $specificVersion) {
   $folder = Join-Path $HOME -ChildPath ".$Product/$specificVersion/$Arch"
   if (-not (Test-Path $folder)) {
     $folder = (New-Item -ItemType Directory -Path $folder).FullName
@@ -79,9 +76,11 @@ function DownloadAndExpandArchive([string] $downloadUrl, [string] $destinationFo
 # This function has side effects and may modify $Version
 $downloadMetadata = GetDownloadMetadata
 
-$destinationFolder = EnsureTerraformFolderExists -specificVersion $Version
+$destinationFolder = EnsureProductFolderExists -specificVersion $Version
 
 DownloadAndExpandArchive -downloadUrl $downloadMetadata.url -destinationFolder $destinationFolder
+
+Write-Host "Installed '$Product' into '$destinationFolder' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
 
 if (-not $KeepCurrentVersion.IsPresent) {
   # User update
@@ -94,6 +93,8 @@ if (-not $KeepCurrentVersion.IsPresent) {
   $updatedPath = $userPaths -join [IO.Path]::PathSeparator
   [Environment]::SetEnvironmentVariable('PATH', $updatedPath, [EnvironmentVariableTarget]::User)
 
+  Write-Host "Updated '$($Env:USERNAME)' path for '$Product' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
+
   # Process update
   $userPaths = [Environment]::GetEnvironmentVariable('PATH', [EnvironmentVariableTarget]::Process) -split [IO.Path]::PathSeparator `
   | Where-Object {
@@ -102,4 +103,6 @@ if (-not $KeepCurrentVersion.IsPresent) {
   }
   $updatedPath = $userPaths -join [IO.Path]::PathSeparator
   [Environment]::SetEnvironmentVariable('PATH', $updatedPath, [EnvironmentVariableTarget]::Process)
+
+  Write-Host "Updated '$PSCommandPath' path for '$Product' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
 }
