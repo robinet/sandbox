@@ -15,27 +15,31 @@ param (
   [switch] $Override
 )
 
+<#-- Script Dependencies --#>
+
+. "$PSScriptRoot/../Shared.ps1"
+
+<#-- Script Parameters --#>
+
 $GitHubHost = 'github.com'
 
-function IsLastNativeCallSuccessful() {
-  return $LASTEXITCODE -eq 0
-}
+<#-- Script Functions --#>
 
 function IsLoggedIn() {
   $(gh auth status -h $GitHubHost 2>$null) | Out-Null
-  return IsLastNativeCallSuccessful
+  return Test-LastNativeCall
 }
 
 function LoginInteractively() {
   $(gh auth login --hostname $GitHubHost --web 2>$null) | Out-Null
-  if (-not (IsLastNativeCallSuccessful)) {
-    throw "GitHub login has been canceled or failed (interactive login)."
+  if (-not (Test-LastNativeCall)) {
+    throw 'GitHub login has been canceled or failed (interactive login).'
   }
 }
 
 function Logout() {
   $(gh auth logout --hostname $GitHubHost 2>$null) | Out-Null
-  return IsLastNativeCallSuccessful
+  return Test-LastNativeCall
 }
 
 function GetProfileFile([string] $name) {
@@ -46,7 +50,7 @@ function GetProfileFile([string] $name) {
 }
 
 function LoadConfigFromFile ([string] $name) {
-  $file = GetProfileFile $name
+  $file = GetProfileFile -name $name
   if (-not [System.IO.File]::Exists($file)) {
     return $null
   }
@@ -54,7 +58,7 @@ function LoadConfigFromFile ([string] $name) {
 }
 
 function SaveConfigToFile ([pscustomobject] $config) {
-  $file = GetProfileFile $config.User
+  $file = GetProfileFile -name $config.User
   ConvertTo-Json $config | Set-Content $file | Out-Null
 }
 
@@ -63,24 +67,24 @@ function GetCurrentConfig() {
     return $null
   }
   $token = $(gh config get -h $GitHubHost oauth_token 2>$null)
-  if (-not (IsLastNativeCallSuccessful)) {
+  if (-not (Test-LastNativeCall)) {
     throw "Could not get 'oauth_token' from current config."
   }
   $user = $(gh config get user -h $GitHubHost 2>$null)
-  if (-not (IsLastNativeCallSuccessful)) {
+  if (-not (Test-LastNativeCall)) {
     throw "Could not get 'user' from current config."
   }
   $config = @{
-    User = $user
+    User           = $user
     EncryptedToken = ConvertTo-SecureString $token -AsPlainText | ConvertFrom-SecureString
   }
   $editor = $(gh config get editor -h $GitHubHost 2>$null)
-  if ((IsLastNativeCallSuccessful)) {
-    $config.Add("Editor", $editor)
+  if ((Test-LastNativeCall)) {
+    $config.Add('Editor', $editor)
   }
   $protocol = $(gh config get git_protocol -h $GitHubHost 2>$null)
-  if ((IsLastNativeCallSuccessful)) {
-    $config.Add("Protocol", $protocol)
+  if ((Test-LastNativeCall)) {
+    $config.Add('Protocol', $protocol)
   }
   return [pscustomobject]$config
 }
@@ -89,7 +93,7 @@ function SetCurrentConfig([pscustomobject] $config) {
   $user = $config.User
   if (-not [string]::IsNullOrWhiteSpace($user)) {
     $(gh config set user $user -h $GitHubHost 2>$null) | Out-Null
-    if (-not (IsLastNativeCallSuccessful)) {
+    if (-not (Test-LastNativeCall)) {
       throw "Setting 'user' property in current config failed."
     }
   }
@@ -110,12 +114,12 @@ function LoginWithEncryptedToken ([string] $encryptedToken) {
   if ($isLoggedIn) {
     $isSuccessfulLogout = Logout
     if (-not $isSuccessfulLogout) {
-      throw "GitHub logout failed (non-interactive login)."
+      throw 'GitHub logout failed (non-interactive login).'
     }
   }
   $($token | gh auth login -h $GitHubHost --with-token 2>$null) | Out-Null
-  if (-not (IsLastNativeCallSuccessful)) {
-    throw "GitHub login failed (non-interactive login)."
+  if (-not (Test-LastNativeCall)) {
+    throw 'GitHub login failed (non-interactive login).'
   }
 }
 
@@ -132,29 +136,34 @@ if (-not $isProfileNameSpecified) {
     LoginInteractively
   }
 
-  $currentConfig = GetCurrentConfig
+  $currentConfig = GetCurrentConfig 
   $currentProfileName = $currentConfig.User
-  $storedConfig = LoadConfigFromFile $currentProfileName
-  
-  if ($null -ne $storedConfig -and -not $isOverride) {
+  $storedConfig = LoadConfigFromFile -name $currentProfileName
+
+  if ($null -ne $storedConfig -and -not $isAlreadyLoggedIn -and -not $isOverride) {
     throw "Profile '$currentProfileName' file exists. Specify the '-Override' switch to replace."
   }
 
-  SaveConfigToFile $currentConfig
+  if ($null -eq $storedConfig -or $isOverride) {
+    SaveConfigToFile -config $currentConfig
+    return
+  }
+
   return
 }
 
-$storedConfig = LoadConfigFromFile $ProfileName
+$storedConfig = LoadConfigFromFile -name $ProfileName
 
 # Login with stored profile
 if ($null -ne $storedConfig -and -not $isOverride) {
 
   if ($ProfileName -ne $storedConfig.User) {
-    $file = GetProfileFile $ProfileName
+    $file = GetProfileFile -name $ProfileName
     throw "Profile '$ProfileName' and stored user '$($storedConfig.User)' mismatch. Please, delete '$file'"
   }
 
-  LoginWithEncryptedToken $storedConfig.EncryptedToken
+  LoginWithEncryptedToken -encryptedToken $storedConfig.EncryptedToken
+  SetCurrentConfig -config $storedConfig
   return
 }
 
@@ -168,8 +177,9 @@ try {
   if ($ProfileName -ne $currentConfig.User) {
     throw "Profile '$ProfileName' and current user '$($currentConfig.User)' mismatch. Cannot save profile."
   }
-  SaveConfigToFile $currentConfig
-} catch {
+  SaveConfigToFile -config $currentConfig
+}
+catch {
   if (-not $isAlreadyLoggedIn) {
     Logout
   }
