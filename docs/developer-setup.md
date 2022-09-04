@@ -39,6 +39,7 @@
 ### DevOps and SRE
 
 - [Terraform][terraform]
+  > 💡You can install **terraform** in windows via `../tools/terraform/Install-TerraformWindows.ps1`
 
 ### Azure
 
@@ -66,10 +67,10 @@
 [gsudo]: https://gerardog.github.io/gsudo/docs/install "gsudo"
 [powershell]: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell "PowerShell"
 [ohmyposh]: https://ohmyposh.dev/docs "Oh My Posh"
-[docker-desktop]: https://docs.docker.com/desktop/#download-and-install
+[docker-desktop]: https://docs.docker.com/desktop/#download-and-install "Docker Desktop"
 [postman]: https://www.postman.com/downloads "Postman"
-[terraform]: https://www.terraform.io/downloads
-[azure-cli]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+[terraform]: https://www.terraform.io/downloads "Terraform"
+[azure-cli]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli "Azure CLI"
 [azure-storage-explorer]: https://azure.microsoft.com/en-us/products/storage/storage-explorer "Azure Storage Explorer"
 [sharex]: https://getsharex.com "ShareX: Screen capture, file sharing and productivity tool"
-[calibre]: https://calibre-ebook.com/download
+[calibre]: https://calibre-ebook.com/download "Calibre"
