@@ -1,9 +1,16 @@
 <#
   .DESCRIPTION
 
-  Install an arbitrary GitHub release (pre-compiled binaries) using the releases API: https://docs.github.com/en/rest/releases/releases#get-the-latest-release
+  Install latest release of a GitHub repository (pre-compiled binaries) using the releases API: https://docs.github.com/en/rest/releases/releases#get-the-latest-release
+  TODO: Extend to non-zip releases (e.g. EXE, MSI, DEB, etc.)
   TODO: Explain usage of AssetMatch, KeepCurrentVersion and ProfileName
   TODO: Provide flexibility on folder to add into PATH (root vs bin vs custom)
+
+  .EXAMPLE
+
+  # Install 'protoc' for windows 64-bit
+  .\Install-GitHubRelease.ps1 -Owner 'protocolbuffers' -Repo 'protobuf' -AssetMatch '/protoc-(?:[0-9\.]+)-win64.zip'
+
 #>
 
 param (
