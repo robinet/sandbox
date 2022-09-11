@@ -3,7 +3,7 @@
 .DESCRIPTION
 
 Install a Hashicorp product (pre-compiled binaries) using the releases API: https://releases.hashicorp.com/docs/api/v1/
-TODO: Extend terraform installation to all hashicorp products
+TODO: Extend terraform and packer installation to all hashicorp products
 
 #>
 
@@ -14,6 +14,10 @@ param (
   , [Validateset('386', 'amd64', 'arm64')] [string] $Arch = 'amd64'
   , [switch] $KeepCurrentVersion
 )
+
+<#-- Script Dependencies --#>
+
+. "$PSScriptRoot/../Shared.ps1"
 
 <#-- Script Functions --#>
 
@@ -54,21 +58,6 @@ function EnsureProductFolderExists([string] $specificVersion) {
     $folder = (Resolve-Path -Path $folder).Path
   }
   return $folder
-}
-
-function DownloadAndExpandArchive([string] $downloadUrl, [string] $destinationFolder) {
-  # Download .zip into temp file and extract to destination folder
-  $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
-  $currentProgressPreference = $ProgressPreference
-  try {
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri $downloadUrl -Method Get -OutFile $tmp
-    $tmp | Expand-Archive -DestinationPath $destinationFolder -Force
-  }
-  finally {
-    $ProgressPreference = $currentProgressPreference
-    $tmp | Remove-Item 
-  }
 }
 
 <#-- Start of script --#>
