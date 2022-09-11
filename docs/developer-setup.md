@@ -48,6 +48,7 @@
 
 ## Other Tools
 
+- [7-Zip][seven-zip] (mostly Windows)
 - [ShareX][sharex] (Windows)
 <!-- TODO: Explain how to configure calibre and plugins -->
 - [Calibre][calibre]
@@ -72,5 +73,6 @@
 [terraform]: https://www.terraform.io/downloads "Terraform"
 [azure-cli]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli "Azure CLI"
 [azure-storage-explorer]: https://azure.microsoft.com/en-us/products/storage/storage-explorer "Azure Storage Explorer"
+[seven-zip]: https://www.7-zip.org/download.html "7-Zip is a file archiver with a high compression ratio"
 [sharex]: https://getsharex.com "ShareX: Screen capture, file sharing and productivity tool"
 [calibre]: https://calibre-ebook.com/download "Calibre"
