@@ -31,7 +31,8 @@ function IsLoggedIn() {
 }
 
 function LoginInteractively() {
-  $(gh auth login --hostname $GitHubHost --web 2>$null) | Out-Null
+  # Do not use '| Out-Null' here. We'll be using device-code login
+  gh auth login --hostname $GitHubHost --web
   if (-not (Test-LastNativeCall)) {
     throw 'GitHub login has been canceled or failed (interactive login).'
   }
@@ -179,7 +180,7 @@ try {
   }
   SaveConfigToFile -config $currentConfig
 }
-catch {
+finally {
   if (-not $isAlreadyLoggedIn) {
     Logout
   }
