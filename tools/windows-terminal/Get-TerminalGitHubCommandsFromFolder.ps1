@@ -1,7 +1,8 @@
 <#
 .EXAMPLE
 
-./Get-TerminalGitHubCommandsFromFolder.ps1 -Folder '<path/to/parent-repos-folder>' -TabColor '#FC4C02A' -Dark | ConvertTo-Json | Out-File <terminal-commands.json>
+./Get-TerminalGitHubCommandsFromFolder.ps1 -Folder '<path/to/parent-repos-folder>' -TabColor '#FC4C02A' -Dark | ConvertTo-Json -Depth 10 | Out-File <terminal-commands.json>
+
 #>
 
 param (
