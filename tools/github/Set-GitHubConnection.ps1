@@ -176,7 +176,7 @@ if (-not $isAlreadyLoggedIn) {
 try {
   $currentConfig = GetCurrentConfig
   if ($ProfileName -ne $currentConfig.User) {
-    throw "Profile '$ProfileName' and current user '$($currentConfig.User)' mismatch. Cannot save profile."
+    throw "Profile '$ProfileName' and current user '$($currentConfig.User)' mismatch. Cannot save profile. Please logout 'gh auth logout'."
   }
   SaveConfigToFile -config $currentConfig
 }
