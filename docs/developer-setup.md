@@ -21,6 +21,7 @@
 <!-- TODO: Explain PowerShell configuration for VSCode Powershell Extension. Uses different profile (Microsoft.VSCode_profile.ps1)  -->
 
 - [Visual Studio Code][vscode]
+- [Visual Studio Code Extension Manager][vscode-vsce]
 
 ## Dev Tools
 
@@ -64,6 +65,7 @@
 [nvm-windows]: https://github.com/coreybutler/nvm-windows "Node Version Manager for Windows"
 [nodejs]: https://nodejs.org/ "Node.js"
 [vscode]: https://code.visualstudio.com/download "Visual Studio Code"
+[vscode-vsce]: https://github.com/microsoft/vscode-vsce "Visual Studio Code Extension Manager"
 [winget]: https://github.com/microsoft/winget-cli "Windows Package Manager Client"
 [gsudo]: https://gerardog.github.io/gsudo/docs/install "gsudo"
 [powershell]: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell "PowerShell"
