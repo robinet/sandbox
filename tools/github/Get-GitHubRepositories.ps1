@@ -79,7 +79,7 @@ try {
     'viewerPossibleCommitEmails',
     'viewerSubscription',
     'watchers')
-  return $(gh repo list $Owner --json "$($fields -join ',')")
+  return $(gh repo list $Owner --json "$($fields -join ',')") | ConvertFrom-Json -Depth 100
 } finally {
   Pop-Location
 }
