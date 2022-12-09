@@ -79,9 +79,8 @@ try {
     'viewerPossibleCommitEmails',
     'viewerSubscription',
     'watchers')
-  $(gh repo list $Owner --limit 5 --json "$($fields -join ',')") > pepe.json
-}
-finally {
+  return $(gh repo list $Owner --json "$($fields -join ',')")
+} finally {
   Pop-Location
 }
 
