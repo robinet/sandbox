@@ -1,7 +1,7 @@
 <#
 .EXAMPLE
 
-./Get-TerminalGitHubCommandsFromFolder.ps1 -Folder '<path/to/parent-repos-folder>' -TabColor '#FC4C02A' -Dark | ConvertTo-Json -Depth 10 | Out-File <terminal-commands.json>
+./Get-TerminalGitHubCommandsFromFolder.ps1 -Folder '<path/to/parent-repos-folder>' -TabColor '#FC4C02' -Dark | ConvertTo-Json -Depth 10 | Out-File <terminal-commands.json>
 
 #>
 
@@ -64,39 +64,3 @@ return [pscustomobject]@{
   icon     = '📂'
   commands = $commands
 }
-
-
-
-<#
-{
-  "name": "/<organization>",
-  "icon": "📂",
-  "commands": [
-    {
-      "action": "newTab",
-      "icon": "▶️",
-      "name": "//<organization>",
-      "command": {
-        "action": "newTab",
-        "tabTitle": "<organization>",
-        "tabColor": "#CCCCCC",
-        "suppressApplicationTitle": true,
-        "startingDirectory": "C:/Projects/GitHub/<organization>"
-      }
-    },
-    {
-      "action": "newTab",
-      "icon": "https://github.githubassets.com/favicons/favicon-dark.png", // /favicons/favicon[-dark].png
-      "name": "ic2-iac",
-      "command": 
-      {
-          "action": "newTab",
-          "startingDirectory": "C:/Projects/GitHub/<organization>/ic2-iac",
-          "suppressApplicationTitle": true,
-          "tabTitle": "ic2-iac",
-          "tabColor": "#06332A"
-      }
-    }
-  ]
-}
-#>
