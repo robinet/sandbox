@@ -42,10 +42,14 @@
 - [Terraform][terraform]
   > 💡You can install **terraform** in windows via `../tools/terraform/Install-TerraformWindows.ps1`
 
+### Networking
+
+- [GNS3][gns3] Emulate, configure, test and troubleshoot virtual and real networks
+
 ### Azure
 
-- [Azure Storag Explorer][azure-storage-explorer]
 - [Azure CLI][azure-cli]
+- [Azure Storag Explorer][azure-storage-explorer]
 
 ## Other Tools
 
@@ -73,6 +77,7 @@
 [docker-desktop]: https://docs.docker.com/desktop/#download-and-install "Docker Desktop"
 [postman]: https://www.postman.com/downloads "Postman"
 [terraform]: https://www.terraform.io/downloads "Terraform"
+[gns3]: https://github.com/GNS3/gns3-gui/releases "GNS3"
 [azure-cli]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli "Azure CLI"
 [azure-storage-explorer]: https://azure.microsoft.com/en-us/products/storage/storage-explorer "Azure Storage Explorer"
 [seven-zip]: https://www.7-zip.org/download.html "7-Zip is a file archiver with a high compression ratio"
