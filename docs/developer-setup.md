@@ -49,7 +49,7 @@
 ### Azure
 
 - [Azure CLI][azure-cli]
-- [Azure Storag Explorer][azure-storage-explorer]
+- [Azure Storage Explorer][azure-storage-explorer]
 
 ## Other Tools
 
