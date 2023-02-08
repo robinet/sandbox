@@ -15,15 +15,27 @@ param (
   [switch] $Override
 )
 
+
 <#-- Script Dependencies --#>
 
 . "$PSScriptRoot/../Shared.ps1"
+
 
 <#-- Script Parameters --#>
 
 $GitHubHost = 'github.com'
 
+
 <#-- Script Functions --#>
+
+function Test-GitHubCliInstalled() {
+  try {
+    $version = $(gh --version)
+    Write-Information "GitHub CLI version: $version"
+  } catch {
+    throw 'Cannot find GitHub CLI (gh). Please install it from https://cli.github.com/.'
+  }
+}
 
 function IsLoggedIn() {
   $(gh auth status -h $GitHubHost 2>$null) | Out-Null
@@ -124,7 +136,10 @@ function LoginWithEncryptedToken ([string] $encryptedToken) {
   }
 }
 
+
 <#-- START OF SCRIPT --#>
+
+Test-GitHubCliInstalled
 
 $isOverride = $Override.IsPresent
 $isProfileNameSpecified = -not [string]::IsNullOrWhiteSpace($ProfileName)
@@ -179,8 +194,7 @@ try {
     throw "Profile '$ProfileName' and current user '$($currentConfig.User)' mismatch. Cannot save profile. Please logout 'gh auth logout'."
   }
   SaveConfigToFile -config $currentConfig
-}
-finally {
+} finally {
   if (-not $isAlreadyLoggedIn) {
     Logout
   }
