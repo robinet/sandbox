@@ -8,7 +8,7 @@ TODO: Extend terraform and packer installation to all hashicorp products
 #>
 
 param (
-  [Validateset('terraform', 'packer')] [string] $Product = 'terraform'
+  [Validateset('terraform', 'packer', 'consul', 'nomad')] [string] $Product = 'terraform'
   , [Validateset('windows', 'linux', 'darwin')] [string] $OS = 'windows' 
   , [string] $Version = 'latest'
   , [Validateset('386', 'amd64', 'arm64')] [string] $Arch = 'amd64'
@@ -53,8 +53,7 @@ function EnsureProductFolderExists([string] $specificVersion) {
   $folder = Join-Path $HOME -ChildPath ".$Product/$specificVersion/$Arch"
   if (-not (Test-Path $folder)) {
     $folder = (New-Item -ItemType Directory -Path $folder).FullName
-  }
-  else {
+  } else {
     $folder = (Resolve-Path -Path $folder).Path
   }
   return $folder
@@ -93,5 +92,5 @@ if (-not $KeepCurrentVersion.IsPresent) {
   $updatedPath = $userPaths -join [IO.Path]::PathSeparator
   [Environment]::SetEnvironmentVariable('PATH', $updatedPath, [EnvironmentVariableTarget]::Process)
 
-  Write-Host "Updated '$PSCommandPath' path for '$Product' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
+  Write-Host "Updated process path for '$Product' (OS: $OS, VERSION: $Version, ARCH: $Arch)."
 }
