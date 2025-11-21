@@ -8,9 +8,130 @@ indent_style = space
 indent_size = 4
 end_of_line = crlf
 charset = utf-8
-trim_trailing_whitespace = false
-insert_final_newline = false
+trim_trailing_whitespace = true
+insert_final_newline = true
 
-[*.{ps1,json,md}]
-indent_style = space
+[*.{asm,s}]
+indent_size = 4
+
+[*.{bash,sh}]
+indent_size = 4
+
+[*.{c,cpp,h,hpp}]
+indent_size = 4
+
+[*.{cbl,cob}]
+indent_size = 4
+
+[*.{cfg,conf}]
+indent_size = 4
+
+[*.{cl,lisp}]
 indent_size = 2
+
+[*.{css,html,js,jsx,ts,tsx}]
+indent_size = 2
+
+[*.dart]
+indent_size = 2
+
+[Dockerfile]
+indent_size = 4
+
+[*.erl]
+indent_size = 4
+
+[*.{ex,exs}]
+indent_size = 2
+
+[*.{f,f90}]
+indent_size = 4
+
+[*.{fs,fsx}]
+indent_size = 4
+
+[*.go]
+indent_style = tab
+indent_size = 4
+
+[*.hs]
+indent_size = 4
+
+[*.ini]
+indent_size = 4
+
+[*.ipynb]
+indent_size = 2
+
+[*.java]
+indent_size = 4
+
+[*.jl]
+indent_size = 4
+
+[*.{json,yaml,yml}]
+indent_size = 2
+
+[*.kt]
+indent_size = 4
+
+[*.lua]
+indent_size = 4
+
+[*.m]
+indent_size = 4
+
+[Makefile]
+indent_style = tab
+indent_size = 4
+
+[*.md]
+indent_size = 2
+
+[*.php]
+indent_size = 4
+
+[*.{pl,pm}]
+indent_size = 4
+
+[*.properties]
+indent_size = 4
+
+[*.ps1]
+indent_size = 4
+
+[*.py]
+indent_size = 4
+
+[*.{R,r}]
+indent_size = 2
+
+[*.rb]
+indent_size = 2
+
+[*.Rmd]
+indent_size = 2
+
+[*.rs]
+indent_size = 4
+
+[*.scala]
+indent_size = 2
+
+[*.sql]
+indent_size = 4
+
+[*.swift]
+indent_size = 4
+
+[*.toml]
+indent_size = 4
+
+[*.vb]
+indent_size = 4
+
+[*.{v,vhdl}]
+indent_size = 4
+
+[*.xml]
+indent_size = 4
